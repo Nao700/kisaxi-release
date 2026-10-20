@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KISAXI - APRS I-Gate ソフトウェア</title>
+<meta name="description" content="KISAXI は Windows と Linux (Raspberry Pi) で動く APRS I-Gate ソフトウェアです。インストール不要の単体実行ファイルで、ブラウザから地図と設定を操作できます。">
+<link rel="icon" href="images/icon.png">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f4f6f9;
+  --text: #1c2430;
+  --muted: #5a6575;
+  --line: #dde2ea;
+  --accent: #1f6feb;
+  --accent-soft: #e8f0fe;
+  --warn-bg: #fff6e0;
+  --warn-line: #f0c36d;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12161c;
+    --bg-soft: #1b2129;
+    --text: #e4e8ee;
+    --muted: #9aa4b2;
+    --line: #2c3540;
+    --accent: #5b9dff;
+    --accent-soft: #1d2a3d;
+    --warn-bg: #2e2715;
+    --warn-line: #8a6d2c;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
+  line-height: 1.75;
+}
+a { color: var(--accent); }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+header.top {
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; background: var(--bg); z-index: 10;
+}
+header.top .wrap { display: flex; align-items: center; gap: 12px; height: 56px; }
+header.top img { width: 32px; height: 32px; }
+header.top .name { font-weight: 700; font-size: 1.1rem; }
+header.top nav { margin-left: auto; display: flex; gap: 16px; font-size: .9rem; }
+header.top nav a { color: var(--muted); text-decoration: none; }
+header.top nav a:hover { color: var(--accent); }
+@media (max-width: 640px) { header.top nav { display: none; } }
+
+.hero { padding: 56px 0 40px; text-align: center; }
+.hero img { width: 120px; height: 120px; }
+.hero h1 { font-size: 2.2rem; margin: 12px 0 4px; }
+.hero .lead { font-size: 1.1rem; color: var(--muted); margin: 0 0 24px; }
+.btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: 10px 22px; border-radius: 8px;
+  text-decoration: none; font-weight: 600; border: 1px solid var(--accent);
+}
+.btn.primary { background: var(--accent); color: #fff; }
+.btn.ghost { color: var(--accent); }
+.tags { margin-top: 20px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.tag { font-size: .8rem; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+
+section { padding: 40px 0; border-top: 1px solid var(--line); }
+section h2 { font-size: 1.5rem; margin: 0 0 20px; }
+section h3 { font-size: 1.05rem; margin: 0 0 6px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.card p { margin: 0; color: var(--muted); font-size: .92rem; }
+
+.shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.shots figure { margin: 0; }
+.shots img { width: 100%; border: 1px solid var(--line); border-radius: 8px; display: block; }
+.shots figcaption { font-size: .85rem; color: var(--muted); margin-top: 6px; }
+
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--bg-soft); }
+.table-scroll { overflow-x: auto; }
+
+ol.steps { padding-left: 1.3em; }
+ol.steps li { margin-bottom: 6px; }
+pre, code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .88em; }
+pre { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; }
+:not(pre) > code { background: var(--bg-soft); padding: 1px 5px; border-radius: 4px; }
+
+.note { background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 8px; padding: 12px 16px; }
+.note ul { margin: 0; padding-left: 1.2em; }
+
+footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--muted); font-size: .85rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <img src="images/icon.png" alt="">
+    <span class="name">KISAXI</span>
+    <nav>
+      <a href="#features">機能</a>
+      <a href="#screens">画面</a>
+      <a href="#env">対応環境</a>
+      <a href="#start">はじめ方</a>
+      <a href="#notes">注意事項</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero wrap">
+    <img src="images/icon.png" alt="KISAXI アイコン">
+    <h1>KISAXI</h1>
+    <p class="lead">インストール不要で、すぐに I-Gate を立ち上げられる<br>APRS I-Gate ソフトウェア</p>
+    <div class="btns">
+      <a class="btn primary" href="https://github.com/Nao700/kisaxi-release/releases/latest">ダウンロード</a>
+      <a class="btn ghost" href="https://github.com/Nao700/kisaxi-release/releases">過去のバージョン</a>
+    </div>
+    <div class="tags">
+      <span class="tag">Windows 10 / 11</span>
+      <span class="tag">Linux x64</span>
+      <span class="tag">Raspberry Pi</span>
+      <span class="tag">KISS シリアル / KISS TCP</span>
+      <span class="tag">OpenStreetMap</span>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>主な機能</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>I-Gate（RF ⇄ APRS-IS）</h3>
+          <p>RF で受信したパケットを <code>qAR</code> 付きで APRS-IS へ送出します。<code>TCPIP</code>・<code>NOGATE</code>・<code>RFONLY</code> などを含むものや 30 秒以内の重複は送りません。ローカル局宛のメッセージは RF へ中継します。</p>
+        </div>
+        <div class="card">
+          <h3>デジピータ</h3>
+          <p><code>WIDE1-1</code> と自局コールサイン宛のパケットを中継します。設定で <code>WIDE2-n</code> の中継も選べます。</p>
+        </div>
+        <div class="card">
+          <h3>TNC 接続</h3>
+          <p>KISS シリアル（COM ポート、<code>/dev/ttyUSB0</code> など）と KISS TCP に対応しています。Direwolf や UZ7HO Soundmodem と組み合わせて使えます。</p>
+        </div>
+        <div class="card">
+          <h3>地図表示</h3>
+          <p>OpenStreetMap 上に APRS シンボル、コールサイン、移動局の軌跡を表示します。局をクリックすると距離・方位・速度・高度・コメント・生パケットが見られます。</p>
+        </div>
+        <div class="card">
+          <h3>ビーコン・オブジェクト</h3>
+          <p>RF と APRS-IS のビーコンをそれぞれの間隔で送信します。オブジェクトとアイテムは最大 10 件まで登録でき、座標は地図のクリックで指定できます。</p>
+        </div>
+        <div class="card">
+          <h3>パケット解析</h3>
+          <p>通常位置、圧縮位置、Mic-E、オブジェクト、アイテム、メッセージ、ステータス、NMEA、気象に対応しています。Shift_JIS のコメントも文字化けしません。</p>
+        </div>
+        <div class="card">
+          <h3>局リスト・パケットモニター</h3>
+          <p>受信局を検索し、RF / IS で絞り込めます。パケットモニターは RF 受信・IS 受信・送信・ゲートを色分けして表示します。</p>
+        </div>
+        <div class="card">
+          <h3>メッセージ</h3>
+          <p>メッセージの送受信ができます。ACK は自動で返し、未達の場合は最大 5 回まで再送します。</p>
+        </div>
+        <div class="card">
+          <h3>ログと復元</h3>
+          <p>パケットは日別のログに保存されます。受信した局は終了時に保存され、次回起動時に復元されます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens">
+    <div class="wrap">
+      <h2>画面</h2>
+      <p>操作はすべてブラウザの管理画面から行います。</p>
+      <div class="shots">
+        <!-- 画像は docs/images/ に置く。ファイルが無いうちはその枠を表示しない -->
+        <figure>
+          <img src="images/screen-map.png" alt="地図画面" loading="lazy" onerror="this.parentNode.remove()">
+          <figcaption>地図：受信した局と移動局の軌跡</figcaption>
+        </figure>
+        <figure>
+          <img src="images/screen-monitor.png" alt="パケットモニター" loading="lazy" onerror="this.parentNode.remove()">
+          <figcaption>パケットモニター：RF / IS / 送信 / ゲートを色分け</figcaption>
+        </figure>
+        <figure>
+          <img src="images/screen-settings.png" alt="設定画面" loading="lazy" onerror="this.parentNode.remove()">
+          <figcaption>設定：コールサイン・位置・TNC・I-Gate の設定</figcaption>
+        </figure>
+      </div>
+      <p id="shots-empty" hidden>画面の写真は準備中です。</p>
+      <script>
+        window.addEventListener('load', function () {
+          if (!document.querySelector('.shots figure')) document.getElementById('shots-empty').hidden = false;
+        });
+      </script>
+    </div>
+  </section>
+
+  <section id="env">
+    <div class="wrap">
+      <h2>対応環境</h2>
+      <div class="table-scroll">
+        <table>
+          <tr><th>OS</th><th>ファイル</th></tr>
+          <tr><td>Windows 10 / 11（64bit）</td><td><code>aprsigate-windows-x64.exe</code></td></tr>
+          <tr><td>Linux（x64）</td><td><code>aprsigate-linux-x64</code></td></tr>
+          <tr><td>Raspberry Pi（64bit OS）</td><td><code>aprsigate-linux-arm64</code></td></tr>
+          <tr><td>Raspberry Pi（32bit OS）</td><td><code>aprsigate-linux-armv7</code></td></tr>
+        </table>
+      </div>
+      <p>どれもランタイムのインストールは不要な単体実行ファイルです。Windows で互換モードを使う必要もありません。</p>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="wrap">
+      <h2>はじめ方</h2>
+
+      <h3>Windows</h3>
+      <ol class="steps">
+        <li><code>aprsigate-windows-x64.exe</code> を好きなフォルダに置いて実行します。</li>
+        <li>ブラウザで管理画面（<code>http://127.0.0.1:8073/</code>）が自動で開きます。</li>
+        <li>「設定」タブでコールサイン・パスコード・位置・TNC を入力し、「保存して適用」を押します。</li>
+      </ol>
+      <p>署名していない exe のため、初回起動時に SmartScreen の警告が出たら「詳細情報」から「実行」を選んでください。コンソールウィンドウを閉じると終了します。</p>
+
+      <h3>Linux / Raspberry Pi</h3>
+<pre>chmod +x aprsigate-linux-arm64
+./aprsigate-linux-arm64</pre>
+      <ul>
+        <li>シリアル TNC を使う場合は、実行ユーザーを <code>dialout</code> グループに追加します：<code>sudo usermod -aG dialout $USER</code></li>
+        <li>別の PC から管理画面を開くときは <code>-listen 0.0.0.0:8073</code> を付けて起動します。</li>
+      </ul>
+      <p>systemd で常駐させる例（<code>/etc/systemd/system/aprsigate.service</code>）：</p>
+<pre>[Unit]
+Description=APRS I-Gate
+After=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/aprsigate
+ExecStart=/home/pi/aprsigate/aprsigate-linux-arm64 -nobrowser
+Restart=always
+
+[Install]
+WantedBy=multi-user.target</pre>
+
+      <h3>設定のポイント</h3>
+      <div class="table-scroll">
+        <table>
+          <tr><th>項目</th><th>内容</th></tr>
+          <tr><td>パスコード</td><td>APRS-IS のパスコードを入力します。<code>-1</code> にすると受信専用になります。</td></tr>
+          <tr><td>シンボル</td><td>I-Gate ではテーブル <code>I</code> とシンボル <code>&amp;</code> の組み合わせが一般的です。</td></tr>
+          <tr><td>フィルター</td><td><code>m/50</code> で自局から半径 50 km の局を受信します。<code>r/緯度/経度/距離</code> なども使えます。</td></tr>
+          <tr><td>Direwolf</td><td>接続方式を「KISS TCP」、アドレスを <code>127.0.0.1:8001</code> にします。</td></tr>
+          <tr><td>UZ7HO Soundmodem</td><td>Soundmodem 側で KISS サーバーを有効にし、アドレスを <code>127.0.0.1:8100</code> にします。</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="wrap">
+      <h2>注意事項</h2>
+      <div class="note">
+        <ul>
+          <li>RF で送信するにはアマチュア無線局の免許が必要です。</li>
+          <li>送信パス（<code>WIDE1-1</code> など）は地域の運用ルールに合わせてください。</li>
+          <li>管理画面には認証機能がありません。<code>-listen 0.0.0.0</code> で公開するときは、信頼できる LAN 内だけで使ってください。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    KISAXI — Developed by JR2TTA Nao ・ <a href="https://github.com/Nao700/kisaxi-release">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
