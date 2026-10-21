@@ -66,6 +66,7 @@ header.top nav a:hover { color: var(--accent); }
 }
 .btn.primary { background: var(--accent); color: #fff; }
 .btn.ghost { color: var(--accent); }
+.btn.disabled { color: var(--muted); border-color: var(--line); background: var(--bg-soft); cursor: default; }
 .tags { margin-top: 20px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .tag { font-size: .8rem; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 
@@ -118,6 +119,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
       <a href="#start">はじめ方</a>
       <a href="#history">更新履歴</a>
       <a href="#notes">注意事項</a>
+      <a href="#support">応援</a>
     </nav>
   </div>
 </header>
@@ -341,6 +343,14 @@ WantedBy=multi-user.target</pre>
           <li>管理画面には認証機能がありません。<code>-listen 0.0.0.0</code> で公開するときは、信頼できる LAN 内だけで使ってください。</li>
         </ul>
       </div>
+    </div>
+  </section>
+  <section id="support">
+    <div class="wrap">
+      <h2>開発を応援する</h2>
+      <p>KISAXI は無料で使えます。開発を応援していただける方は、ドネーションをご検討ください。</p>
+      <!-- 受け取り先が決まったら、下の span を <a class="btn primary" href="URL">サービス名で応援する</a> に置き換える -->
+      <p><span class="btn disabled">準備中</span></p>
     </div>
   </section>
 </main>
