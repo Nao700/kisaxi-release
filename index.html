@@ -57,7 +57,8 @@ header.top nav a:hover { color: var(--accent); }
 .hero { padding: 56px 0 40px; text-align: center; }
 .hero img { width: 120px; height: 120px; }
 .hero h1 { font-size: 2.2rem; margin: 12px 0 4px; }
-.hero .lead { font-size: 1.1rem; color: var(--muted); margin: 0 0 24px; }
+.hero .lead { font-size: 1.1rem; color: var(--muted); margin: 0 0 8px; }
+.hero .ver { font-size: .9rem; color: var(--muted); margin: 0 0 24px; }
 .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .btn {
   display: inline-block; padding: 10px 22px; border-radius: 8px;
@@ -95,6 +96,12 @@ pre { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 
 .note { background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 8px; padding: 12px 16px; }
 .note ul { margin: 0; padding-left: 1.2em; }
 
+.history dt { font-weight: 700; margin-top: 16px; }
+.history dt:first-child { margin-top: 0; }
+.history dt span { font-weight: 400; color: var(--muted); font-size: .85rem; margin-left: 8px; }
+.history dd { margin: 4px 0 0; }
+.history ul { margin: 0; padding-left: 1.2em; }
+
 footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--muted); font-size: .85rem; text-align: center; }
 </style>
 </head>
@@ -109,6 +116,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
       <a href="#screens">画面</a>
       <a href="#env">対応環境</a>
       <a href="#start">はじめ方</a>
+      <a href="#history">更新履歴</a>
       <a href="#notes">注意事項</a>
     </nav>
   </div>
@@ -119,6 +127,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
     <img src="images/icon.png" alt="KISAXI アイコン">
     <h1>KISAXI</h1>
     <p class="lead">インストール不要で、すぐに I-Gate を立ち上げられる<br>APRS I-Gate ソフトウェア</p>
+    <p class="ver">最新バージョン 1.0.5（2026-10-21）</p>
     <div class="btns">
       <a class="btn primary" href="https://github.com/Nao700/kisaxi-release/releases/latest">ダウンロード</a>
       <a class="btn ghost" href="https://github.com/Nao700/kisaxi-release/releases">過去のバージョン</a>
@@ -172,6 +181,22 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
           <h3>ログと復元</h3>
           <p>パケットは日別のログに保存されます。受信した局は終了時に保存され、次回起動時に復元されます。</p>
         </div>
+        <div class="card">
+          <h3>最長距離 (DX) の記録</h3>
+          <p>RF で直接受信した最も遠い局を記録して画面上部に表示します。更新するとステータスで送信し、aprs.fi のステータス欄に表示されます。リセットのタイミング（毎日・毎時）と距離の単位（km / mi）は設定で選べます。</p>
+        </div>
+        <div class="card">
+          <h3>出力・アンテナ (PHG) と通達範囲</h3>
+          <p>送信出力・アンテナ高・利得・指向を設定すると、ビーコンに PHG を付けて送信します。計算した通達範囲を、地図に自局を中心とした円で表示します。</p>
+        </div>
+        <div class="card">
+          <h3>位置あいまい局の表示</h3>
+          <p>座標の桁を伏せて送っている局（Mic-E を含む）は、マーカーにカーソルを乗せるとその範囲をピンクの四角で地図に表示し、マーカーを範囲の中心に合わせます。</p>
+        </div>
+        <div class="card">
+          <h3>aprs.fi で機種名を表示</h3>
+          <p>正式に登録された宛先 (TOCALL) <code>APKSXI</code> で送信するので、aprs.fi などで KISAXI からの送信だとわかります。</p>
+        </div>
       </div>
     </div>
   </section>
@@ -212,10 +237,12 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
           <tr><th>OS</th><th>ファイル</th></tr>
           <tr><td>Windows 10 / 11（64bit）</td><td><code>aprsigate-windows-x64.exe</code></td></tr>
           <tr><td>Linux（x64）</td><td><code>aprsigate-linux-x64</code></td></tr>
-          <tr><td>Raspberry Pi（64bit OS）</td><td><code>aprsigate-linux-arm64</code></td></tr>
-          <tr><td>Raspberry Pi（32bit OS）</td><td><code>aprsigate-linux-armv7</code></td></tr>
+          <tr><td>Raspberry Pi 3 / 4 / 5、Zero 2 W（64bit OS）</td><td><code>aprsigate-linux-arm64</code></td></tr>
+          <tr><td>Raspberry Pi 3 / 4、Zero 2 W（32bit OS）</td><td><code>aprsigate-linux-armv7</code></td></tr>
+          <tr><td>Raspberry Pi Zero / Zero W（非推奨）</td><td><code>aprsigate-linux-armv6</code></td></tr>
         </table>
       </div>
+      <p>Raspberry Pi で <code>uname -m</code> が <code>aarch64</code> なら 64bit OS です。Pi Zero / Zero W は CPU が非力で動作が不安定になる可能性があるため、おすすめしません。</p>
       <p>どれもランタイムのインストールは不要な単体実行ファイルです。Windows で互換モードを使う必要もありません。</p>
     </div>
   </section>
@@ -239,15 +266,15 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
         <li>シリアル TNC を使う場合は、実行ユーザーを <code>dialout</code> グループに追加します：<code>sudo usermod -aG dialout $USER</code></li>
         <li>別の PC から管理画面を開くときは <code>-listen 0.0.0.0:8073</code> を付けて起動します。</li>
       </ul>
-      <p>systemd で常駐させる例（<code>/etc/systemd/system/aprsigate.service</code>）：</p>
+      <p>systemd で常駐させる例（<code>/etc/systemd/system/aprsigate.service</code>）。「ユーザー名」は実行するユーザーに置き換えてください。いまの Raspberry Pi OS には <code>pi</code> ユーザーがありません。</p>
 <pre>[Unit]
 Description=APRS I-Gate
 After=network-online.target
 
 [Service]
-User=pi
-WorkingDirectory=/home/pi/aprsigate
-ExecStart=/home/pi/aprsigate/aprsigate-linux-arm64 -nobrowser
+User=ユーザー名
+WorkingDirectory=/home/ユーザー名/aprsigate
+ExecStart=/home/ユーザー名/aprsigate/aprsigate-linux-arm64 -nobrowser
 Restart=always
 
 [Install]
@@ -264,6 +291,43 @@ WantedBy=multi-user.target</pre>
           <tr><td>UZ7HO Soundmodem</td><td>Soundmodem 側で KISS サーバーを有効にし、アドレスを <code>127.0.0.1:8100</code> にします。</td></tr>
         </table>
       </div>
+    </div>
+  </section>
+
+  <section id="history">
+    <div class="wrap">
+      <h2>更新履歴</h2>
+      <dl class="history">
+        <dt>1.0.5 <span>2026-10-21</span></dt>
+        <dd><ul>
+          <li>最長距離 (DX) の記録と表示を追加。更新したらステータスで送信（最短 10 分間隔）</li>
+          <li>DX のリセット（毎日 24 時 / 毎時 0 分）・距離の単位（km / mi）・RF への送信を設定で選択可能</li>
+          <li>出力・アンテナ (PHG) の設定を追加。ビーコンに PHG を付けて送信し、通達範囲を地図に表示</li>
+        </ul></dd>
+        <dt>1.0.4 <span>2026-10-20</span></dt>
+        <dd><ul>
+          <li>位置あいまい局（Mic-E を含む）の範囲を地図に表示し、マーカーを範囲の中心に補正</li>
+          <li>宛先 (TOCALL) を登録済みの <code>APKSXI</code> に変更</li>
+          <li>Raspberry Pi Zero / Zero W 向けの armv6 版を追加</li>
+        </ul></dd>
+        <dt>1.0.3 <span>2026-10-14</span></dt>
+        <dd><ul>
+          <li>デジピータ機能を追加</li>
+          <li>パケットモニターに中継 (DIGI) の表示と絞り込みを追加</li>
+        </ul></dd>
+        <dt>1.0.2 <span>2026-10-11</span></dt>
+        <dd><ul>
+          <li>オブジェクト / アイテムビーコンを追加（最大 10 件）</li>
+          <li>送信するパケットの直接編集、削除通知の送信に対応</li>
+        </ul></dd>
+        <dt>1.0.1 <span>2026-10-11</span></dt>
+        <dd><ul>
+          <li>受信した局とパケットを再起動後も引き継ぐように変更</li>
+          <li>気象局 (WX) 情報欄を追加</li>
+        </ul></dd>
+        <dt>1.0.0 <span>2026-10-11</span></dt>
+        <dd><ul><li>初版リリース</li></ul></dd>
+      </dl>
     </div>
   </section>
 
