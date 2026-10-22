@@ -320,6 +320,24 @@ WantedBy=multi-user.target</pre>
         <li>アイコンを消すときは <code>bash ~/aprsigate/desktop-setup.sh --remove</code> を実行します。</li>
       </ul>
       <p>ファイルを個別に見る：<a href="extras/pi-launcher/aprsigate-start.sh">aprsigate-start.sh</a> ・ <a href="extras/pi-launcher/desktop-setup.sh">desktop-setup.sh</a> ・ <a href="extras/pi-launcher/kisaxi_app_icon.png">kisaxi_app_icon.png</a></p>
+
+      <h3>Bluetooth で無線機とつなぐ（Linux / Raspberry Pi）</h3>
+      <p>TH-D74 / TH-D75 / TM-D750 を Bluetooth で TNC として使えるように、<code>/dev/rfcomm0</code> を作るスクリプトです。再起動後も自動で使えるように登録します。実機での動作確認は TM-D750 で行っています。</p>
+      <div class="btns" style="justify-content:flex-start">
+        <a class="btn primary" href="extras/bluetooth/bt-tnc-setup.sh" download>bt-tnc-setup.sh をダウンロード</a>
+      </div>
+      <ol class="steps">
+        <li>無線機の Bluetooth をオンにして、Pi とペアリングします（デスクトップ右上の Bluetooth アイコン、または <code>bluetoothctl</code> で）。</li>
+        <li>ダウンロードしたファイルを実行ファイルと同じフォルダ（例：<code>~/aprsigate</code>）に置き、ターミナルで次を実行します。
+<pre>sudo bash ~/aprsigate/bt-tnc-setup.sh</pre></li>
+        <li>KISAXI の「設定」で TNC を「KISS シリアル」、ポートを <code>/dev/rfcomm0</code> にして「保存して適用」を押します。</li>
+      </ol>
+      <ul>
+        <li>無線機側は KISS モードにして、データの通信先を Bluetooth にします。</li>
+        <li>シリアルポートのチャンネルを自動で調べられないときは番号を聞かれます。TM-D750 は 27 でした。</li>
+        <li>やめるときは <code>sudo bash ~/aprsigate/bt-tnc-setup.sh --remove</code> を実行します。</li>
+        <li>Windows ではスクリプトは不要です。ペアリング後に「その他の Bluetooth 設定」→「COM ポート」に出る「発信」側の COM を選びます。</li>
+      </ul>
     </div>
   </section>
 
