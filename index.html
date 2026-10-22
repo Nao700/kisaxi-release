@@ -117,6 +117,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
       <a href="#screens">画面</a>
       <a href="#env">対応環境</a>
       <a href="#start">はじめ方</a>
+      <a href="#extras">付録</a>
       <a href="#history">更新履歴</a>
       <a href="#notes">注意事項</a>
       <a href="#support">応援</a>
@@ -293,6 +294,32 @@ WantedBy=multi-user.target</pre>
           <tr><td>UZ7HO Soundmodem</td><td>Soundmodem 側で KISS サーバーを有効にし、アドレスを <code>127.0.0.1:8100</code> にします。</td></tr>
         </table>
       </div>
+    </div>
+  </section>
+
+  <section id="extras">
+    <div class="wrap">
+      <h2>付録</h2>
+
+      <h3>Raspberry Pi のデスクトップから起動する</h3>
+      <p>毎回ターミナルでコマンドを打たずに、デスクトップやメニューのアイコンをダブルクリックして起動できるようにするスクリプトです。</p>
+      <div class="btns" style="justify-content:flex-start">
+        <a class="btn primary" href="extras/kisaxi-pi-launcher.zip" download>kisaxi-pi-launcher.zip をダウンロード</a>
+      </div>
+      <ol class="steps">
+        <li>zip の中の <code>aprsigate-start.sh</code>・<code>desktop-setup.sh</code>・<code>kisaxi_app_icon.png</code> を、実行ファイルと同じフォルダ（例：<code>~/aprsigate</code>）に置きます。</li>
+        <li>ターミナルで一度だけ次を実行します（sudo は不要です）。
+<pre>bash ~/aprsigate/desktop-setup.sh</pre></li>
+        <li>デスクトップとメニューの「インターネット」に KISAXI のアイコンができます。ダブルクリックすると、ターミナルの画面つきで起動して管理画面が開きます。</li>
+      </ol>
+      <ul>
+        <li>「このファイルを実行しますか」と聞かれたら「実行」を選びます。</li>
+        <li>止めるときは、開いたターミナルの画面で <code>Ctrl+C</code> を押すか、画面を閉じます。</li>
+        <li>機種に合う実行ファイル（arm64 / armv7 / armv6 / x64）は自動で選ばれます。</li>
+        <li>systemd で常駐させている間にアイコンを押すと、二重には起動せず管理画面だけが開きます。</li>
+        <li>アイコンを消すときは <code>bash ~/aprsigate/desktop-setup.sh --remove</code> を実行します。</li>
+      </ul>
+      <p>ファイルを個別に見る：<a href="extras/pi-launcher/aprsigate-start.sh">aprsigate-start.sh</a> ・ <a href="extras/pi-launcher/desktop-setup.sh">desktop-setup.sh</a> ・ <a href="extras/pi-launcher/kisaxi_app_icon.png">kisaxi_app_icon.png</a></p>
     </div>
   </section>
 
