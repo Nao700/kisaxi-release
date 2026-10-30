@@ -139,7 +139,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
     <img src="images/icon.png" alt="KISAXI アイコン">
     <h1>KISAXI</h1>
     <p class="lead">インストール不要で、すぐに I-Gate を立ち上げられる<br>APRS I-Gate ソフトウェア</p>
-    <p class="ver">最新バージョン 1.0.6（2026-10-22）</p>
+    <p class="ver">最新バージョン 1.0.7（2026-10-29）</p>
     <div class="release" id="release" data-date="2026-11-23T00:00:00+09:00">
       <div class="release-title">正式リリース <strong>2026年11月23日</strong></div>
       <div class="count" id="count" aria-live="off">
@@ -181,7 +181,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
         </div>
         <div class="card">
           <h3>地図表示</h3>
-          <p>OpenStreetMap 上に APRS シンボル、コールサイン、移動局の軌跡を表示します。局をクリックすると距離・方位・速度・高度・コメント・生パケットが見られます。</p>
+          <p>OpenStreetMap 上に APRS シンボル、コールサイン、移動局の軌跡（日付や時間で区切るかどうかは設定で選べます）を表示します。局をクリックすると距離・方位・速度・高度・コメント・生パケットが見られます。</p>
         </div>
         <div class="card">
           <h3>ビーコン・オブジェクト</h3>
@@ -368,6 +368,11 @@ WantedBy=multi-user.target</pre>
     <div class="wrap">
       <h2>更新履歴</h2>
       <dl class="history">
+        <dt>1.0.7 <span>2026-10-29</span></dt>
+        <dd><ul>
+          <li>地図の軌跡を日付が変わったところで区切って描くように変更。受信範囲の外に出て別の日に戻ってきた局が、離れた点どうしの直線で結ばれて扇形になる問題を修正</li>
+          <li>設定の「その他」に「軌跡の区切り」を追加。日付が変わったら（既定）／一定時間あいたら（間隔を分で指定）／区切らない から選べる</li>
+        </ul></dd>
         <dt>1.0.6 <span>2026-10-22</span></dt>
         <dd><ul>
           <li>自動更新を追加。画面上部のお知らせまたは「このソフトについて」から、ダウンロード・入れ替え・再起動まで行える</li>
