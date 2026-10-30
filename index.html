@@ -66,6 +66,15 @@ header.top nav a:hover { color: var(--accent); }
 }
 .btn.primary { background: var(--accent); color: #fff; }
 .btn.ghost { color: var(--accent); }
+.release { margin: 0 auto 24px; padding: 14px 20px; max-width: 420px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-soft); }
+.release-title { font-size: .95rem; color: var(--muted); }
+.release-title strong { color: var(--text); font-size: 1.05rem; }
+.count { display: flex; justify-content: center; gap: 16px; margin-top: 6px; }
+.count div { min-width: 56px; }
+.count b { display: block; font-size: 1.8rem; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.count span { font-size: .8rem; color: var(--muted); }
+.count[hidden], .release-done[hidden] { display: none; }
+.release-done { font-weight: 700; font-size: 1.1rem; margin-top: 4px; }
 .btn.disabled { color: var(--muted); border-color: var(--line); background: var(--bg-soft); cursor: default; }
 .tags { margin-top: 20px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .tag { font-size: .8rem; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
@@ -130,7 +139,17 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
     <img src="images/icon.png" alt="KISAXI アイコン">
     <h1>KISAXI</h1>
     <p class="lead">インストール不要で、すぐに I-Gate を立ち上げられる<br>APRS I-Gate ソフトウェア</p>
-    <p class="ver">最新バージョン 1.0.5（2026-10-21）</p>
+    <p class="ver">最新バージョン 1.0.7（2026-10-29）</p>
+    <div class="release" id="release" data-date="2026-11-23T00:00:00+09:00">
+      <div class="release-title">正式リリース <strong>2026年11月23日</strong></div>
+      <div class="count" id="count" aria-live="off">
+        <div><b id="cd-d">--</b><span>日</span></div>
+        <div><b id="cd-h">--</b><span>時間</span></div>
+        <div><b id="cd-m">--</b><span>分</span></div>
+        <div><b id="cd-s">--</b><span>秒</span></div>
+      </div>
+      <div class="release-done" id="release-done" hidden>正式リリースしました</div>
+    </div>
     <div class="btns">
       <a class="btn primary" href="https://github.com/Nao700/kisaxi-release/releases/latest">ダウンロード</a>
       <a class="btn ghost" href="https://github.com/Nao700/kisaxi-release/releases">過去のバージョン</a>
@@ -162,7 +181,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
         </div>
         <div class="card">
           <h3>地図表示</h3>
-          <p>OpenStreetMap 上に APRS シンボル、コールサイン、移動局の軌跡を表示します。局をクリックすると距離・方位・速度・高度・コメント・生パケットが見られます。</p>
+          <p>OpenStreetMap 上に APRS シンボル、コールサイン、移動局の軌跡（日付や時間で区切るかどうかは設定で選べます）を表示します。局をクリックすると距離・方位・速度・高度・コメント・生パケットが見られます。</p>
         </div>
         <div class="card">
           <h3>ビーコン・オブジェクト</h3>
@@ -183,6 +202,10 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
         <div class="card">
           <h3>ログと復元</h3>
           <p>パケットは日別のログに保存されます。受信した局は終了時に保存され、次回起動時に復元されます。</p>
+        </div>
+        <div class="card">
+          <h3>自動更新</h3>
+          <p>新しいバージョンが出ると画面上部にお知らせが出て、ボタン一つでダウンロードと入れ替え、再起動までできます。ダウンロードしたファイルはチェックサムなどを確かめてから入れ替えます。設定で、見つかったら自動で更新することもできます（既定はオフ）。</p>
         </div>
         <div class="card">
           <h3>最長距離 (DX) の記録</h3>
@@ -267,7 +290,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
 ./aprsigate-linux-arm64</pre>
       <ul>
         <li>シリアル TNC を使う場合は、実行ユーザーを <code>dialout</code> グループに追加します：<code>sudo usermod -aG dialout $USER</code></li>
-        <li>別の PC から管理画面を開くときは <code>-listen 0.0.0.0:8073</code> を付けて起動します。</li>
+        <li>別の PC やスマホから管理画面を開くときは、Tailscale の利用をおすすめします。Pi で <code>sudo tailscale serve --bg 8073</code> を実行すれば、Tailscale を入れた端末だけから、家の中でも外出先でも安全に開けます。Tailscale を使えないときは <code>-listen 0.0.0.0:8073</code> を付けて起動しますが、認証機能がないので信頼できる LAN 内だけで使ってください。</li>
       </ul>
       <p>systemd で常駐させる例（<code>/etc/systemd/system/aprsigate.service</code>）。「ユーザー名」は実行するユーザーに置き換えてください。いまの Raspberry Pi OS には <code>pi</code> ユーザーがありません。</p>
 <pre>[Unit]
@@ -345,8 +368,21 @@ WantedBy=multi-user.target</pre>
     <div class="wrap">
       <h2>更新履歴</h2>
       <dl class="history">
+        <dt>1.0.7 <span>2026-10-29</span></dt>
+        <dd><ul>
+          <li>地図の軌跡を日付が変わったところで区切って描くように変更。受信範囲の外に出て別の日に戻ってきた局が、離れた点どうしの直線で結ばれて扇形になる問題を修正</li>
+          <li>設定の「その他」に「軌跡の区切り」を追加。日付が変わったら（既定）／一定時間あいたら（間隔を分で指定）／区切らない から選べる</li>
+        </ul></dd>
+        <dt>1.0.6 <span>2026-10-22</span></dt>
+        <dd><ul>
+          <li>自動更新を追加。画面上部のお知らせまたは「このソフトについて」から、ダウンロード・入れ替え・再起動まで行える</li>
+          <li>設定に「新しいバージョンが見つかったら自動でダウンロードして入れ替え、再起動する」を追加（既定オフ）</li>
+          <li>ダウンロードしたファイルはチェックサムと実行ファイルの形式を確かめてから入れ替える。systemd で動かしている場合は終了だけ行い、再起動はサービス側に任せる</li>
+        </ul></dd>
         <dt>1.0.5 <span>2026-10-21</span></dt>
         <dd><ul>
+          <li>更新の確認（試験的、既定オフ）を追加</li>
+          <li>局の位置表示を aprs.fi と同じ度分表記に変更</li>
           <li>最長距離 (DX) の記録と表示を追加。更新したらステータスで送信（最短 10 分間隔）</li>
           <li>DX のリセット（毎日 24 時 / 毎時 0 分）・距離の単位（km / mi）・RF への送信を設定で選択可能</li>
           <li>出力・アンテナ (PHG) の設定を追加。ビーコンに PHG を付けて送信し、通達範囲を地図に表示</li>
@@ -406,5 +442,27 @@ WantedBy=multi-user.target</pre>
   </div>
 </footer>
 
+<script>
+(function () {
+  var box = document.getElementById('release');
+  var target = new Date(box.getAttribute('data-date')).getTime();
+  var ids = ['d', 'h', 'm', 's'].map(function (k) { return document.getElementById('cd-' + k); });
+  var count = document.getElementById('count');
+  var done = document.getElementById('release-done');
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function tick() {
+    var left = Math.floor((target - Date.now()) / 1000);
+    if (left <= 0) { count.hidden = true; done.hidden = false; return false; }
+    ids[0].textContent = Math.floor(left / 86400);
+    ids[1].textContent = pad(Math.floor(left % 86400 / 3600));
+    ids[2].textContent = pad(Math.floor(left % 3600 / 60));
+    ids[3].textContent = pad(left % 60);
+    return true;
+  }
+  if (tick()) {
+    var t = setInterval(function () { if (!tick()) clearInterval(t); }, 1000);
+  }
+})();
+</script>
 </body>
 </html>
