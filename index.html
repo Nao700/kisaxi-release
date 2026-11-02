@@ -139,7 +139,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
     <img src="images/icon.png" alt="KISAXI アイコン">
     <h1>KISAXI</h1>
     <p class="lead">インストール不要で、すぐに I-Gate を立ち上げられる<br>APRS I-Gate ソフトウェア</p>
-    <p class="ver">最新バージョン 1.0.7（2026-10-29）</p>
+    <p class="ver">最新バージョン 1.0.9（2026-11-02）</p>
     <div class="release" id="release" data-date="2026-11-23T00:00:00+09:00">
       <div class="release-title">正式リリース <strong>2026年11月23日</strong></div>
       <div class="count" id="count" aria-live="off">
@@ -198,6 +198,10 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
         <div class="card">
           <h3>ログと復元</h3>
           <p>パケットは日別のログに保存されます。受信した局は終了時に保存され、次回起動時に復元されます。</p>
+        </div>
+        <div class="card">
+          <h3>ウェザーステーション</h3>
+          <p>Davis（Vantage Pro2 / Vue）の現在値を読み取り、自局とは別の SSID（既定は自局コール-13）の位置付き APRS WX として APRS-IS と RF に送信します。「気象」タブに現在値、本日の最高・最低、グラフ（6時間〜7日）を表示します。Davis の屋外センサーの電波を RTL-SDR で直接受信することもできます（β版）。433MHz 帯の簡易気象センサーは rtl_433 経由で取り込めます（β版）。</p>
         </div>
         <div class="card">
           <h3>自動更新</h3>
@@ -364,6 +368,18 @@ WantedBy=multi-user.target</pre>
     <div class="wrap">
       <h2>更新履歴</h2>
       <dl class="history">
+        <dt>1.0.9 <span>2026-11-02</span></dt>
+        <dd><ul>
+          <li>Davis の屋外センサー (ISS) の電波を、RTL-SDR で直接受信できるように（β版）。928.15〜929.65 MHz の 16 チャンネルを同時に受信し、気温・湿度・風向・風速・雨量・日射を気象タブと APRS WX 送信に反映</li>
+          <li>RTL-SDR のドライバ (rtlsdr.dll / librtlsdr) は KISAXI と同じフォルダに置く。気圧は電波に含まれないため送信されず、雨量は起動後の増分を積算</li>
+        </ul></dd>
+        <dt>1.0.8 <span>2026-10-29</span></dt>
+        <dd><ul>
+          <li>ウェザーステーション (Davis) に対応。USB・シリアルのデータロガーまたは WeatherLinkIP から、約 2 秒ごとに現在値を読み取る</li>
+          <li>気象データを別の SSID の位置付き APRS WX パケットとして送信。APRS-IS（既定 5 分間隔）と RF（既定 30 分間隔、オフ可）を別々に設定でき、地図にも気象局として表示</li>
+          <li>rtl_433 (RTL-SDR) からの気象データ取り込みを追加（β版）。433MHz 帯の簡易気象センサー (Fine Offset・Acurite・Bresser など) に対応</li>
+          <li>「気象」タブを追加。現在値、本日の最高・最低気温と最大瞬間風速、グラフ (6 時間 / 24 時間 / 72 時間 / 7 日)、送信状況を表示し、手動送信もできる</li>
+        </ul></dd>
         <dt>1.0.7 <span>2026-10-29</span></dt>
         <dd><ul>
           <li>地図の軌跡を日付が変わったところで区切って描くように変更。受信範囲の外に出て別の日に戻ってきた局が、離れた点どうしの直線で結ばれて扇形になる問題を修正</li>
