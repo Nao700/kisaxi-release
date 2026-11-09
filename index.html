@@ -75,6 +75,7 @@ header.top nav a:hover { color: var(--accent); }
 .count span { font-size: .8rem; color: var(--muted); }
 .count[hidden], .release-done[hidden] { display: none; }
 .release-done { font-weight: 700; font-size: 1.1rem; margin-top: 4px; }
+.muted { color: var(--muted); font-size: .9rem; }
 .btn.disabled { color: var(--muted); border-color: var(--line); background: var(--bg-soft); cursor: default; }
 .tags { margin-top: 20px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .tag { font-size: .8rem; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
@@ -139,7 +140,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
     <img src="images/icon.png" alt="KISAXI アイコン">
     <h1>KISAXI</h1>
     <p class="lead">インストール不要で、すぐに I-Gate を立ち上げられる<br>APRS I-Gate ソフトウェア</p>
-    <p class="ver">最新バージョン 1.0.9（2026-11-02）</p>
+    <p class="ver">最新バージョン 1.0.10（2026-11-04）</p>
     <div class="release" id="release" data-date="2026-11-23T00:00:00+09:00">
       <div class="release-title">正式リリース <strong>2026年11月23日</strong></div>
       <div class="count" id="count" aria-live="off">
@@ -177,7 +178,7 @@ footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--m
         </div>
         <div class="card">
           <h3>地図表示</h3>
-          <p>OpenStreetMap 上に APRS シンボル、コールサイン、移動局の軌跡（日付や時間で区切るかどうかは設定で選べます）を表示します。局をクリックすると距離・方位・速度・高度・コメント・生パケットが見られます。</p>
+          <p>OpenStreetMap 上に APRS シンボル、コールサイン、移動局の軌跡（日付や時間で区切るかどうかは設定で選べます）を表示します。局をクリックすると距離・方位・速度・高度・コメント・生パケットが見られます。重なったアイコンはクリックで広げて 1 局ずつ選べます。</p>
         </div>
         <div class="card">
           <h3>ビーコン・オブジェクト</h3>
@@ -368,6 +369,10 @@ WantedBy=multi-user.target</pre>
     <div class="wrap">
       <h2>更新履歴</h2>
       <dl class="history">
+        <dt>1.0.10 <span>2026-11-04</span></dt>
+        <dd><ul>
+          <li>地図上で重なっているアイコンをクリックすると、放射状に広がって 1 局ずつ選べるように変更。広がった後にアイコンをクリックすると、その局の情報が開く。地図の空白をクリック・拡大縮小・Esc キーで元に戻る</li>
+        </ul></dd>
         <dt>1.0.9 <span>2026-11-02</span></dt>
         <dd><ul>
           <li>Davis の屋外センサー (ISS) の電波を、RTL-SDR で直接受信できるように（β版）。928.15〜929.65 MHz の 16 チャンネルを同時に受信し、気温・湿度・風向・風速・雨量・日射を気象タブと APRS WX 送信に反映</li>
@@ -443,8 +448,8 @@ WantedBy=multi-user.target</pre>
     <div class="wrap">
       <h2>開発を応援する</h2>
       <p>KISAXI は無料で使えます。開発を応援していただける方は、ドネーションをご検討ください。</p>
-      <!-- 受け取り先が決まったら、下の span を <a class="btn primary" href="URL">サービス名で応援する</a> に置き換える -->
-      <p><span class="btn disabled">準備中</span></p>
+      <p><a class="btn primary" href="https://github.com/sponsors/Nao700" target="_blank" rel="noopener">GitHub Sponsors で応援する</a></p>
+      <p class="muted">GitHub のアカウントで、一度きりの支援も毎月の支援も選べます。</p>
     </div>
   </section>
 </main>
